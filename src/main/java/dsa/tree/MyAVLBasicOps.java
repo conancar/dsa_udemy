@@ -21,7 +21,7 @@ public class MyAVLBasicOps {
 //		final MyBinaryTreeNode<Integer> found = binarySearchTree.search(binarySearchTree.getRoot(), 50);
 //		System.out.println(found);
 
-	//	avlTree.deleteNode(avlTree.getRoot(),20);
+		avlTree.delete(40);
 
 		System.out.println(avlTree);
 

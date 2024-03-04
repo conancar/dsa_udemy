@@ -169,16 +169,15 @@ public class MyAVLTreeLinkedListImpl<T extends Comparable<T> & Serializable> {
 	}
 
 
-	public MyBinaryTreeNode<T> deleteNode(MyBinaryTreeNode<T> node, T value) {
+	public MyBinaryTreeNode<T> deleteInternal(MyBinaryTreeNode<T> node, T value) {
 
 		if (node == null) {
 			return null;
 		}
-
 		if (value.compareTo(node.getValue()) < 0) {
-			node.setLeft(deleteNode(node.getLeft(), value));
+			node.setLeft(deleteInternal(node.getLeft(), value));
 		} else if (value.compareTo(node.getValue()) > 0) {
-			node.setRight(deleteNode(node.getRight(), value));
+			node.setRight(deleteInternal(node.getRight(), value));
 		} else {
 			//3 situations ,
 			if (node.getLeft() != null && node.getRight() != null) {
@@ -186,7 +185,7 @@ public class MyAVLTreeLinkedListImpl<T extends Comparable<T> & Serializable> {
 				MyBinaryTreeNode<T> temp = node;
 				MyBinaryTreeNode<T> successor = findSuccessorForNode(temp.getRight());
 				node.setValue(successor.getValue());
-				node.setRight(deleteNode(node.getRight(), value));
+				node.setRight(deleteInternal(node.getRight(), value));
 			} else if (node.getLeft() != null) {
 				node = node.getLeft();
 				//2 if node has 1 child reconnect that child to parent (and node is removed)
@@ -197,7 +196,37 @@ public class MyAVLTreeLinkedListImpl<T extends Comparable<T> & Serializable> {
 				node = null;
 			}
 		}
+
+		//update height for current node
+		root.setHeigthForAVLTree(max(getHeight(root.getLeft()), getHeight(root.getRight()))+ 1);
+
+
+		int balance =getBalance(node);
+
+		//left-left condition
+		if(balance >1 && getBalance(node.getLeft())>=0){
+			return rotateRight(node);
+		}
+
+		//left-right condition
+		if(balance >1 && getBalance(node.getLeft())<0){
+			node.setLeft(rotateLeft(node.getLeft()));
+			return rotateRight(node);
+		}
+
+		//right-right condition
+		if(balance <-1 && getBalance(node.getRight())<=0){
+			return rotateLeft(node);
+		}
+
+		//right-left condition
+		if(balance <-1 && getBalance(node.getRight())>0){
+			node.setRight(rotateRight(node.getRight()));
+			return rotateLeft(node);
+		}
+
 		return node;
+
 	}
 
 	//(the smallest node in right subtree, so call this with node.right)
@@ -209,7 +238,11 @@ public class MyAVLTreeLinkedListImpl<T extends Comparable<T> & Serializable> {
 
 	}
 
-	public void delete() {
+	public void delete(T value) {
+		this.root = deleteInternal(root,value);
+	}
+
+	public void deleteEntireTree() {
 		this.root = null;
 	}
 
