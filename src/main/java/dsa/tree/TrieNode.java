@@ -28,4 +28,5 @@ public class TrieNode {
 	public void setEndOfString(boolean endOfString) {
 		this.endOfString = endOfString;
 	}
+
 }
