@@ -2,6 +2,8 @@ package dsa.graph;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Stack;
 
 public class GraphAdjacencyListImpl<T extends Serializable> {
 
@@ -21,6 +23,56 @@ public class GraphAdjacencyListImpl<T extends Serializable> {
 
 	}
 
+
+	private void bfsHelper(GraphNode<T> graphNode){
+		LinkedList<GraphNode<T>> queue=new LinkedList<>();
+		queue.add(graphNode);
+		while (!queue.isEmpty()){
+			GraphNode<T> currentNode=queue.remove(0);
+			currentNode.setVisited(true);
+			System.out.println("Visited node List"+currentNode);
+
+			for (GraphNode<T> neighbour : graphNode.getNeighbours()) {
+				if(!neighbour.isVisited()){
+					queue.add(neighbour);
+					neighbour.setVisited(true);
+				}
+			}
+		}
+	}
+
+	private void dfsHelper(GraphNode<T> graphNode){
+		Stack<GraphNode<T>> stack=new Stack<>();
+		stack.push(graphNode);
+		while (!stack.isEmpty()){
+			GraphNode<T> currentNode=stack.pop();
+			currentNode.setVisited(true);
+			System.out.println("Visited node List"+currentNode);
+
+			for (GraphNode<T> neighbour : graphNode.getNeighbours()) {
+				if(!neighbour.isVisited()){
+					stack.push(neighbour);
+					neighbour.setVisited(true);
+				}
+			}
+		}
+	}
+
+	public void bfs(){
+		for (GraphNode<T> graphNode : nodeList) {
+			if (!graphNode.isVisited()){
+				bfsHelper(graphNode);
+			}
+		}
+	}
+
+	public void dfs(){
+		for (GraphNode<T> graphNode : nodeList) {
+			if (!graphNode.isVisited()){
+				dfsHelper(graphNode);
+			}
+		}
+	}
 
 	// For printing Graph to the console
 

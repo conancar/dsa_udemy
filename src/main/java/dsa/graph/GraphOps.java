@@ -42,9 +42,15 @@ public class GraphOps {
 		graphList.addUndirectedEdge(4,3);//link from D to E
 		graphList.addUndirectedEdge(2,3);//link from C to D
 
-		System.out.println(graphMatrix);
 
-		System.out.println(graphList);
+	//	graphMatrix.bfs();
+	//	graphList.bfs();
+	 	graphMatrix.dfs(); //ADECB
+	//	graphList.dfs();  //ADCBE
+
+//		System.out.println(graphMatrix);
+//
+//		System.out.println(graphList);
 
 	}
 }
